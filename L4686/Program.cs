@@ -62,41 +62,8 @@ namespace L4686
 
             // ------------------------------------------------------------------------------------------------------------------
             // ------------------------------------------------------------------------------------------------------------------
-            // -- 3dn : Product of three distinct primes (2)
-
-            int[] tinyPrimes = { 2, 3, 5, 7, 11, 13 };
-
-            var poss_dn03 = new AnswerList();
-            for (int i = 0; i < 4; i++)
-            {
-                for (int j = i + 1; j < 5; j++)
-                {
-                    for (int k = j + 1; k < 6; k++)
-                    {
-                        int product = tinyPrimes[i] * tinyPrimes[j] * tinyPrimes[k];
-                        if (product < 100 && ValidateNumber(product))
-                        {
-                            poss_dn03.Add(product);
-                        }
-                    }
-                }
-            }
-            //var dn03 = DisplayValuesAndAssign(" 3dn", poss_dn03);
-
-            // ------------------------------------------------------------------------------------------------------------------
-            // -- 1ac : Prime (4)
-
-            var poss_ac01 = new AnswerList();
-            foreach (int work_ac01 in FourDigitPrimes1to6)
-            {
-                foreach (var work_dn03 in poss_dn03.GetAnswers())
-                    if (digitAtPosition(work_ac01, 2) == digitAtPosition(work_dn03.GetValue(), 0))
-                        poss_ac01.Add(work_ac01);
-            }
-            //var ac01 = DisplayValuesAndAssign(" 1ac", poss_ac01);
-
-            // ------------------------------------------------------------------------------------------------------------------
-            // -- 7dn : Power (2)
+            // --  RESOLVE :  7dn : Power (2)
+            // --             4ac : Power (4)
 
             var poss_dn07 = new AnswerList();
             var poss_ac04 = new AnswerList();
@@ -117,7 +84,9 @@ namespace L4686
             var dn07 = DisplayValuesAndAssign(" 7dn", poss_dn07);
 
             // ------------------------------------------------------------------------------------------------------------------
-            // -- 6dn : 7dn + 18dn (4)
+            // -- RESOLVE :  6dn : 7dn + 18dn (4)
+            // -- RESOLVE : 18dn : Power (4)
+            // -- RESOLVE :  4ac : Power (4)
 
             var poss_dn06 = new AnswerList();
             var poss_dn18 = new AnswerList();
@@ -138,7 +107,7 @@ namespace L4686
             var ac04 = DisplayValuesAndAssign(" 4ac", poss_ac04);
 
             // ------------------------------------------------------------------------------------------------------------------
-            // -- 14ac : Triangular number (2)
+            // -- RESOLVE : 14ac : Triangular number (2)
 
             var poss_ac14 = new AnswerList();
             int digit = digitAtPosition(dn06, 2);
@@ -150,7 +119,7 @@ namespace L4686
             var ac14 = DisplayValuesAndAssign("14ac", poss_ac14);
 
             // ------------------------------------------------------------------------------------------------------------------
-            // -- 15dn : Square (4)
+            // -- RESOLVE : 15dn : Square (4)
 
             var poss_dn15 = new AnswerList();
             digit = digitAtPosition(ac14, 1);
@@ -161,17 +130,7 @@ namespace L4686
             }
             var dn15 = DisplayValuesAndAssign("15dn", poss_dn15);
 
-            // ------------------------------------------------------------------------------------------------------------------
-            // -- 24dn : Sum of two consecutive squares (3)
-
-            var poss_dn24 = new AnswerList();
-            for (int i = 1; (i * i) + ((i + 1) * (i + 1)) < 700; i++)
-            {
-                int sum = (i * i) + ((i + 1) * (i + 1));
-                if (sum > 100 && ValidateNumber(sum))
-                    poss_dn24.Add(sum);
-            }
-            var dn24 = DisplayValuesAndAssign("24dn", poss_dn24);
+            FourDigitSquares.Remove(dn15);
 
             // ------------------------------------------------------------------------------------------------------------------
             // -- 12ac : Even Square (3)
@@ -182,13 +141,14 @@ namespace L4686
                 if (ValidateNumber(i * i))
                     poss_ac12.Add(i * i);
             }
-//            var ac12 = DisplayValuesAndAssign("12ac", poss_ac12);
+            var ac12 = 0;// = DisplayValuesAndAssign("12ac", poss_ac12);
 
             // ------------------------------------------------------------------------------------------------------------------
             // -- 29ac : Multiple of a power (2)
 
-            var poss_ac29 = new AnswerList();
             digit = digitAtPosition(dn18, 3);
+
+            var poss_ac29 = new AnswerList();
             foreach (int root in new int[] { 2, 3, 5 })
             {
                 var power = root * root * root;
@@ -205,26 +165,14 @@ namespace L4686
                     power *= root;
                 }
             }
-            var ac29 = DisplayValuesAndAssign("29ac", poss_ac29);
-
-            // ------------------------------------------------------------------------------------------------------------------
-            // -- 19ac : Triangular number - 29ac (2)
-
-            var poss_ac19 = new AnswerList();
-            for (int i = 0; allTriangular[i] - ac29 < 70; i++)
-            {
-                int work_ac19 = allTriangular[i] - ac29;
-                if (work_ac19 >= 10 && ValidateNumber(work_ac19))
-                    poss_ac19.Add(work_ac19);
-            }
-            var ac19 = DisplayValuesAndAssign("19ac", poss_ac19);
+            var ac29 = 0;// = DisplayValuesAndAssign("29ac", poss_ac29);
 
             // ------------------------------------------------------------------------------------------------------------------
             // -- 11dn : Twice a Square (3)
 
             var poss_dn11 = new AnswerList();
-            int ind = 8;
-            while (2 * ind * ind < 700)
+            int ind = 8; // start at 2*8*8 = 128
+            while (2 * ind * ind < 667)
             {
                 if (ValidateNumber(2 * ind * ind))
                 {
@@ -274,7 +222,7 @@ namespace L4686
                     work_ac08 = allTriangular[ind++] - work_ac18.GetValue();
                 }
             }
-            //var ac08 = DisplayValuesAndAssign(" 8ac", poss_ac08);
+            var ac08 = 0;// = DisplayValuesAndAssign(" 8ac", poss_ac08);
 
             // ------------------------------------------------------------------------------------------------------------------
             //-- 9dn : Triangular number (7)
@@ -312,64 +260,256 @@ namespace L4686
                 poss_ac12.OnlyIncludeDigitAtPosition(poss_digits[0], 0);
             }
             var dn09 = DisplayValuesAndAssign(" 9dn", poss_dn09);
-            var ac12 = DisplayValuesAndAssign("12ac", poss_ac12);
+            ac12 = DisplayValuesAndAssign("12ac", poss_ac12);
 
             // ------------------------------------------------------------------------------------------------------------------
             // -- 8ac : Triangular number - 18ac (4)
 
-            poss_ac08.OnlyIncludeDigitAtPosition(digitAtPosition(poss_dn09.GetAnswers()[0].GetValue(), 0), 1);
-            var ac08 = DisplayValuesAndAssign(" 8ac", poss_ac08);
+            poss_ac08.OnlyIncludeDigitAtPosition(digitAtPosition(dn09, 0), 1);
+            ac08 = DisplayValuesAndAssign(" 8ac", poss_ac08);
 
             // ------------------------------------------------------------------------------------------------------------------
-            // -- 3dn : Product of three distinct primes (2)
+            // -- 17ac : Multiple of 7dn ( 4)
 
-            poss_dn03.OnlyIncludeDigitAtPosition(digitAtPosition(ac08, 0), 1);
+            int remainder = digitAtPosition(dn06, 3) * 10 + digitAtPosition(dn15, 1);
+            var poss_ac17 = new AnswerList();
+            int work_ac17 = 10 * dn07;
+            while (work_ac17 < 6667)
+            {
+                work_ac17 += dn07;
+                if (work_ac17 < 1111) continue;
+                if (!ValidateNumber(work_ac17)) continue;
+                if (work_ac17 % 100 != remainder) continue;
+                poss_ac17.Add(work_ac17);
+            }
+            var ac17 = DisplayValuesAndAssign("17ac", poss_ac17);
+
+
+            // ------------------------------------------------------------------------------------------------------------------
+            // -- 3dn : Product of three distinct primes (2);
+
+            int[] tinyPrimes = { 2, 3, 5, 7, 11, 13 };
+            int tinyLen = tinyPrimes.Length;
+
+            var poss_dn03 = new AnswerList();
+            for (int i = 0; i < tinyLen - 2; i++)
+            {
+                for (int j = i + 1; j < tinyLen - 1; j++)
+                {
+                    for (int k = j + 1; k < tinyLen; k++)
+                    {
+                        int product = tinyPrimes[i] * tinyPrimes[j] * tinyPrimes[k];
+                        if (product > 100) continue;
+                        if (!ValidateNumber(product)) continue;
+                        if (digitAtPosition(product, 1) != digitAtPosition(ac08, 0)) continue;
+                        poss_dn03.Add(product);
+                    }
+                }
+            }
             var dn03 = DisplayValuesAndAssign(" 3dn", poss_dn03);
 
             // ------------------------------------------------------------------------------------------------------------------
             // -- 1ac : Prime (4)
 
+            var poss_ac01 = new AnswerList();
+            foreach (int work_ac01 in FourDigitPrimes1to6)
+            {
+                foreach (var work_dn03 in poss_dn03.GetAnswers())
+                    if (digitAtPosition(work_ac01, 2) == digitAtPosition(work_dn03.GetValue(), 0))
+                        poss_ac01.Add(work_ac01);
+            }
             poss_ac01.OnlyIncludeDigitAtPosition(digitAtPosition(dn03, 0), 2);
             var ac01 = DisplayValuesAndAssign(" 1ac", poss_ac01);
 
-            // -- 9dn
-            // -- 11ac
-            //// ------------------------------------------------------------------------------------------------------------------
-            //// -- 13dn : Square(7)
-            //Console.WriteLine("--------------------------------------");
-            //Console.WriteLine("13dn : Square(7)");
-            //Console.WriteLine();
+            // ------------------------------------------------------------------------------------------------------------------
+            // -- 24dn : Sum of two consecutive squares (3)
 
-            //for (int i = 1000; i * i < 6666667; i++)
-            //{
-            //    int n = i * i;
-            //    if (ValidateNumber(n))
-            //    {
-            //        if ("25".Contains(n.ToString()[0]))
-            //            if (n.ToString()[2] == '5')
-            //                Console.WriteLine(n);
-            //    }
-            //}
-            //Console.WriteLine();
+            var poss_dn24 = new AnswerList();
+            for (int i = 1; (i * i) + ((i + 1) * (i + 1)) < 700; i++)
+            {
+                int sum = (i * i) + ((i + 1) * (i + 1));
+                if (sum > 100 && ValidateNumber(sum))
+                    poss_dn24.Add(sum);
+            }
+            var dn24 = DisplayValuesAndAssign("24dn", poss_dn24);
 
-            ////-- 30ac : Square + 24dn (3)
-            //Console.WriteLine("--------------------------------------");
-            //Console.WriteLine("30ac : Square + 24dn");
-            //Console.WriteLine();
-            //int dig = 1;
-            //while (dig * dig + d24 < 1000)
-            //{
-            //    int sum = dig * dig + d24;
-            //    if (sum.ToString()[1] == '1')
-            //        Console.WriteLine(sum);
-            //    dig++;
-            //}
-            //int a30 = 313;
+            // ------------------------------------------------------------------------------------------------------------------
+            // -- 13dn : Square (7)
 
-            //Console.WriteLine();
+            var dig2 = new HashSet<int>();
+
+            var poss_dn13 = new AnswerList();
+            for (int i = 1000; i * i < 6666667; i++)
+            {
+                int work_dn13 = i * i;
+                if (!ValidateNumber(work_dn13)) continue;
+
+                if (digitAtPosition(ac12, 1) != digitAtPosition(work_dn13, 0)) continue;
+                if (digitAtPosition(ac18, 4) != digitAtPosition(work_dn13, 2)) continue;
+                poss_dn13.Add(work_dn13);
+                dig2.Add(digitAtPosition(work_dn13, 1));
+            }
+            var dn13 = DisplayValuesAndAssign("13dn", poss_dn13);
+
+            poss_ac17.OnlyIncludeDigitAtPosition(dig2, 0);
+            ac17 = DisplayValuesAndAssign("17ac", poss_ac17);
+
+            // ------------------------------------------------------------------------------------------------------------------
+            // -- 5dn : Product of three distinct primes (5)
+
+            var poss_dn05 = new AnswerList();
+            for (int i = 0; Primes.AllPrimes[i] < 40; i++)
+            {
+                int p1 = Primes.AllPrimes[i];
+                for (int j = i + 1; Primes.AllPrimes[j] * p1 < 1640; j++)
+                {
+                    int p2 = Primes.AllPrimes[j];
+                    for (int k = j + 1; Primes.AllPrimes[k] * p1 * p2 < 66667; k++)
+                    {
+                        var p3 = Primes.AllPrimes[k];
+                        int product = p1 * p2 * p3;
+                        if (product > 10000 && product < 100000 && ValidateNumber(product))
+                        {
+                            if (digitAtPosition(product, 0) != digitAtPosition(ac04, 1)) continue;
+                            if (digitAtPosition(product, 1) != digitAtPosition(ac08, 3)) continue;
+                            if (digitAtPosition(product, 2) != digitAtPosition(ac12, 2)) continue;
+                            poss_dn05.Add(product);
+                        }
+                    }
+                }
+            }
+
+            dig2 = new HashSet<int>();
+            foreach (var work in poss_ac17.GetAnswers())
+            {
+                dig2.Add(digitAtPosition(work.GetValue(), 1));
+            }
+            poss_dn05.OnlyIncludeDigitAtPosition(dig2, 3);
+            var dn05 = DisplayValuesAndAssign(" 5dn", poss_dn05);
+
+            // ------------------------------------------------------------------------------------------------------------------
+            // -- 29ac : Multiple of a power (2)
+            // -- 19ac : Triangular number - 29ac (2)
+
+            digit = digitAtPosition(dn05, 4);
+            int triang = 0;
+            var poss_ac19 = new AnswerList();
+            foreach (var work_ac29 in poss_ac29.GetAnswers())
+            {
+                for (int i = 1; i < 7; i++)
+                {
+                    var work_ac19 = digit * 10 + i;
+
+                    if (!allTriangular.Contains(work_ac19 + work_ac29.GetValue())) continue;
+                    triang = work_ac19 + work_ac29.GetValue();
+                    if (!ValidateNumber(work_ac19)) continue;
+                    poss_ac19.Add(work_ac19);
+                }
+            }
+            var ac19 = DisplayValuesAndAssign("19ac", poss_ac19);
+            if (poss_ac19.GetAnswers().Count == 1)
+            {
+                poss_ac29 = new AnswerList();
+                poss_ac29.Add(triang - ac19);
+            }
+            ac29 = DisplayValuesAndAssign("29ac", poss_ac29);
+
+            // ------------------------------------------------------------------------------------------------------------------
+            // -- 32dn : 19ac - 7dn (2)
+
+            var poss_dn32 = new AnswerList();
+            poss_dn32.Add(ac19 - dn07);
+            var dn32 = DisplayValuesAndAssign("32dn", poss_dn32);
+
+            // ------------------------------------------------------------------------------------------------------------------
+            // -- 25ac : Prime (4)
+            // -- 35ac : Triangular number (4)
+            // -- 26dn : Half of a triangular number (4)
+
+            var poss_ac25 = new AnswerList();
+            var poss_ac35 = new AnswerList();
+            var poss_dn26 = new AnswerList();
+            foreach (var tri in allTriangular.Where(x => x % 2 == 0 && x / 2 > 1000 && x / 2 < 6667))
+            {
+                var work_dn26 = tri / 2;
+                if (!ValidateNumber(work_dn26)) continue;
+                if (digitAtPosition(work_dn26, 1) != digitAtPosition(ac29, 1)) continue;
+
+                foreach (var work_ac35 in triangular1to6.Where(x => x > 1000 && x < 6667))
+                {
+                    if (digitAtPosition(work_ac35, 0) != digitAtPosition(dn32, 1)) continue;
+                    if (digitAtPosition(work_ac35, 1) != digitAtPosition(work_dn26, 3)) continue;
+
+                    foreach (var work_ac25 in FourDigitPrimes1to6)
+                    {
+                        if (digitAtPosition(work_ac25, 0) != digitAtPosition(dn18, 2)) continue;
+                        if (digitAtPosition(work_ac25, 1) != digitAtPosition(work_dn26, 0)) continue;
+                        if (digitAtPosition(work_ac25, 3) != digitAtPosition(dn09, 5)) continue;
+
+                        poss_ac25.Add(work_ac25);
+                        poss_dn26.Add(work_dn26);
+                        poss_ac35.Add(work_ac35);
+                    }
+                }
+            }
+            var ac25 = DisplayValuesAndAssign("25ac", poss_ac25);
+            var ac35 = DisplayValuesAndAssign("35ac", poss_ac35);
+            var dn26 = DisplayValuesAndAssign("26dn", poss_dn26);
+
+            // ------------------------------------------------------------------------------------------------------------------
+            // -- 21ac : Power (2) 
+            // -- 22dn : Multiple of the square of 32dn (5)
+
+            var sqr = dn32 * dn32;
+            var work_dn22 = sqr;
+
+            var poss_ac21 = new AnswerList();
+            var poss_dn22 = new AnswerList();
+            while (work_dn22 < 66667)
+            {
+                work_dn22 += sqr;
+
+                if (work_dn22 < 11111) continue;
+                if (!ValidateNumber(work_dn22)) continue;
+                foreach (var work_ac25 in poss_ac25.GetAnswers())
+                {
+                    if (digitAtPosition(work_dn22, 1) != digitAtPosition(work_ac25.GetValue(), 2)) continue;
+
+                    foreach (var work_ac21 in TwoDigitPower)
+                    {
+                        if (digitAtPosition(work_dn22, 0) == digitAtPosition(work_ac21, 1))
+                        {
+                            poss_ac21.Add(work_ac21);
+                            poss_dn22.Add(work_dn22);
+                        }
+                    }
+                }
+            }
+            var ac21 = DisplayValuesAndAssign("21ac", poss_ac21);
+            var dn22 = DisplayValuesAndAssign("22dn", poss_dn22);
+
+            // ------------------------------------------------------------------------------------------------------------------
+            // -- 25ac : Prime (4)
+
+            poss_ac25.OnlyIncludeDigitAtPosition(digitAtPosition(dn22, 1), 2);
+            ac25 = DisplayValuesAndAssign("25ac", poss_ac25);
+
+            // ------------------------------------------------------------------------------------------------------------------
+            // -- 35ac : Triangular number (4)
+
+            poss_ac35.OnlyIncludeDigitAtPosition(digitAtPosition(dn22, 4), 2);
+            ac35 = DisplayValuesAndAssign("35ac", poss_ac35);
+
+            // ------------------------------------------------------------------------------------------------------------------
+            // -- 26dn : Half of a triangular number (4)
+
+            poss_dn26.OnlyIncludeDigitAtPosition(digitAtPosition(ac35, 1), 3);
+            dn26 = DisplayValuesAndAssign("26dn", poss_dn26);
         }
 
-        //-------------------------------------------------------
+        // ------------------------------------------------------------------------------------------------------------------
+        // ------------------------------------------------------------------------------------------------------------------
+        // ------------------------------------------------------------------------------------------------------------------
         public static int digitAtPosition(int num, int pos)
         {
             return int.Parse($"{num.ToString()[pos]}");

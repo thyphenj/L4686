@@ -31,22 +31,57 @@ namespace L4686
 
         public override string ToString()
         {
-            return $"Count {Answers.Count} " + (Answers.Count==1 ? $"=> {Answers[0].GetValue()}" : "");
+            return $"Count {Answers.Count} " + (Answers.Count == 1 ? $"=> {Answers[0].GetValue()}" : "");
         }
 
         internal void OnlyIncludeDigitAtPosition(int digit, int pos)
         {
             int i = Answers.Count;
-            while ( i > 0 )
+            while (i > 0)
             {
                 i--;
                 var answer = Answers[i];
-                if (Program.digitAtPosition( answer.GetValue(),pos) != digit)
+                if (Program.digitAtPosition(answer.GetValue(), pos) != digit)
                 {
                     Answers.Remove(answer);
                 }
             }
         }
+        internal void OnlyIncludeDigitAtPosition(HashSet<int> digits, int pos)
+        {
+            var work = new List<Answer>();
+            foreach (var dig in digits)
+            {
+                int i = Answers.Count;
+                while (i > 0)
+                {
+                    i--;
+                    var answer = Answers[i];
+                    if (Program.digitAtPosition(answer.GetValue(), pos) == dig)
+                    {
+                        work.Add(answer);
+                    }
+                }
+            }
+            Answers = work;
+        }
+        internal void OnlyIncludeDigitAtPosition(int[] digits, int pos)
+        {
+            var work = new List<Answer>();
+            foreach (var dig in digits)
+            {
+                int i = Answers.Count;
+                while (i > 0)
+                {
+                    i--;
+                    var answer = Answers[i];
+                    if (Program.digitAtPosition(answer.GetValue(), pos) == dig)
+                    {
+                        work.Add(answer);
+                    }
+                }
+            }
+            Answers = work;
+        }
     }
 }
-
