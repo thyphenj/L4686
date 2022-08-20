@@ -1,4 +1,4 @@
-﻿using System;
+﻿using System.Linq;
 using System.Collections.Generic;
 
 namespace L4686
@@ -64,6 +64,24 @@ namespace L4686
                 }
             }
             Answers = work;
+        }
+        internal void OnlyIncludeDigitAtPosition(AnswerList answers, int pos,int pos2)
+        {
+            var work = new HashSet<Answer>();
+            foreach ( var ans in answers.GetAnswers())
+            {
+                int i = Answers.Count;
+                while (i > 0)
+                {
+                    i--;
+                    var answer = Answers[i];
+                    if (Program.digitAtPosition(answer.GetValue(), pos2) == Program.digitAtPosition(ans.GetValue(),pos))
+                    {
+                        work.Add(answer);
+                    }
+                }
+            }
+            Answers = work.ToList();
         }
         internal void OnlyIncludeDigitAtPosition(int[] digits, int pos)
         {
